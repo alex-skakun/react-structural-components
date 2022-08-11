@@ -1,0 +1,39 @@
+{
+  "name": "npm-package-template",
+  "version": "1.0.0",
+  "sideEffects": false,
+  "author": {
+    "email": "alex.skakun@me.com",
+    "name": "Aleksey Skakun",
+    "url": "https://github.com/alex-skakun"
+  },
+  "repository": {
+    "url": ""
+  },
+  "license": "MIT",
+  "keywords": [],
+  "config": {
+    "localRegistry": "http://localhost:4873"
+  },
+  "scripts": {
+    "test": "npx jest",
+    "test:coverage": "npx jest --coverage",
+    "updateLocals": "node ./tools/updateLocalDependencies.mjs",
+    "build": "npm run build:cjs && npm run build:esm",
+    "prebuild": "rimraf ./dist",
+    "postbuild": "node ./tools/completePackage.mjs",
+    "build:cjs": "echo 'Building CommonJS version' && tsc -p ./tsconfig.cjs.json --pretty",
+    "build:esm": "echo 'Building ESModule version' && tsc -p ./tsconfig.esm.json --pretty",
+    "prerelease": "npm run build",
+    "release": "npm publish ./dist --tag latest --access public",
+    "prerelease:dev": "npm run build && (npm unpublish --registry $npm_package_config_localRegistry --force || true)",
+    "release:dev": "npm publish ./dist --registry $npm_package_config_localRegistry"
+  },
+  "localDevDependencies": [],
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.4",
+    "jest-environment-jsdom": "^28.1.1",
+    "ts-jest": "^28.0.5",
+    "typescript": "^4.7.4"
+  }
+}
