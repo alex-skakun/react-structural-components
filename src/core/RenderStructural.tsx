@@ -1,17 +1,20 @@
-import { PropsWithChildren, ReactNode, useContext, useMemo } from 'react';
+import { ReactNode, useContext, useMemo } from 'react';
 import { SafeChildren, StructuralChildren, StructuralRendererContext, useChildrenChange } from '../internals';
 
-export const RenderStructural = {
-  Data<Data>({ data }: { data: Data }): null {
+
+export class RenderStructural {
+
+  static Data<D>({ data }: { data: D }): null {
     const rendererContext = useContext(StructuralRendererContext);
 
     rendererContext.dataSubject.next(data);
 
     return null;
-  },
-  JSX<Args extends any[]>({ children }: { children: ReactNode | ((...args: Args) => ReactNode) }): null {
+  }
+
+  static JSX<A extends any[]>({ children }: { children: ReactNode | ((...args: A) => ReactNode) }): null {
     const rendererContext = useContext(StructuralRendererContext);
-    const [childrenArray, childrenChangeFlag] = useChildrenChange(children as StructuralChildren<any, any>);
+    const [childrenArray, childrenChangeFlag] = useChildrenChange(children as StructuralChildren);
 
     useMemo(() => {
       const safeChildren = new SafeChildren();
@@ -22,5 +25,6 @@ export const RenderStructural = {
     }, [childrenChangeFlag]);
 
     return null;
-  },
-};
+  }
+
+}

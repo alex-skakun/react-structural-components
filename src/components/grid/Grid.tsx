@@ -1,14 +1,15 @@
 import { Render$ } from 'react-rx-tools';
-import { structuralComponent } from '../core';
-import { useStructuralData } from '../core/useStructuralData';
+import { structuralComponent, useStructuralData } from '../../core';
+import { StructuralElement } from '../../internals';
 import { ColumnDef, ColumnDefProps } from './ColumnDef';
-import { StructuralElement } from '../internals';
+
 
 type GridProps = {
   data: any[];
+  children: StructuralElement<ColumnDefProps>[];
 };
 
-export const Grid = structuralComponent<GridProps, StructuralElement<ColumnDefProps>, never>(({ data }) => {
+export const Grid = structuralComponent<GridProps, never>(({ data }) => {
   const columns$ = useStructuralData(ColumnDef);
 
   return <table>
@@ -31,4 +32,4 @@ export const Grid = structuralComponent<GridProps, StructuralElement<ColumnDefPr
     </tr>)}
     </tbody>
   </table>;
-});
+}, 'Grid', [ColumnDef]);

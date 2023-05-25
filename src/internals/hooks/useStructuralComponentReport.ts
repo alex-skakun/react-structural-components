@@ -2,12 +2,12 @@ import { ReactNode } from 'react';
 import { useOnce } from 'react-cool-hooks';
 import { useSubject } from 'react-rx-tools';
 
-import { distinctUntilChanged, ReplaySubject, Subject } from 'rxjs';
+import { distinctUntilChanged, ReplaySubject } from 'rxjs';
 import { SafeChildren, StructuralComponentReport, StructuralRendererContextData } from '../types';
 
 
 export function _useStructuralComponentReport<Data, Args extends any[]>(
-  selector: symbol,
+  selector: symbol
 ): [StructuralComponentReport<Data, Args>, StructuralRendererContextData<Data, Args>] {
   const dataSubject = useSubject(() => new ReplaySubject<Data>(1));
   const childrenSubject = useSubject(() => new ReplaySubject<SafeChildren<ReactNode, Args>>(1));
@@ -15,7 +15,7 @@ export function _useStructuralComponentReport<Data, Args extends any[]>(
   const report = useOnce(() => ({
     data: dataSubject.pipe(distinctUntilChanged()),
     children: childrenSubject.pipe(distinctUntilChanged()),
-    selector,
+    selector
   }));
 
   const context = useOnce<StructuralRendererContextData<Data, Args>>(() => ({

@@ -1,14 +1,14 @@
-import { RenderStructural, structuralComponent } from '../core';
-import { Th, ThProps } from './Th';
-import { Td, TdProps } from './Td';
-import { ArgOfChildren, StructuralElement } from '../internals';
-import { useStructuralChildren } from '../core/useStructuralChildren';
 import { useMemo } from 'react';
+import { RenderStructural, structuralComponent, useStructuralChildren } from '../../core';
+import { ArgOfChildren, StructuralElement } from '../../internals';
+import { Td, TdProps } from './Td';
+import { Th, ThProps } from './Th';
 
 
 export type ColumnDefProps = {
   id: string;
   sortable?: boolean;
+  children: (StructuralElement<ThProps> | StructuralElement<TdProps>)[];
 };
 
 export type ColumnDefData = {
@@ -18,10 +18,7 @@ export type ColumnDefData = {
   RenderTd: (p: ArgOfChildren<TdProps>) => JSX.Element,
 };
 
-export const ColumnDef = structuralComponent<ColumnDefProps, StructuralElement<ThProps> | StructuralElement<TdProps>, ColumnDefData>(({
-  id,
-  sortable,
-}) => {
+export const ColumnDef = structuralComponent<ColumnDefProps, ColumnDefData>(({ id, sortable }) => {
   const RenderTh = useStructuralChildren(Th);
   const RenderTd = useStructuralChildren(Td);
   const columnData = useMemo(() => {
@@ -29,9 +26,9 @@ export const ColumnDef = structuralComponent<ColumnDefProps, StructuralElement<T
       id,
       sortable,
       RenderTh,
-      RenderTd,
+      RenderTd
     };
   }, [id, sortable]);
 
   return <RenderStructural.Data data={columnData}/>;
-}, 'ColumnDef');
+}, 'ColumnDef', [Th, Td]);

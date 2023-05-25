@@ -3,6 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+      .accordion-content {
+        box-sizing: border-box;
+        overflow: hidden;
+      }
+
+      @media screen and (prefers-reduced-motion: no-preference) {
+        .accordion-content {
+          transition: height .2s ease;
+        }
+      }
+    </style>
 </head>
 <body>
 <section id="test"></section>
